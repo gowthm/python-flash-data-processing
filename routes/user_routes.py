@@ -48,6 +48,22 @@ def update_users(id):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+#DELETE
+@user_bp.route('/delete_user/<id>', methods=['DELETE'])
+def detele_users(id):
+    try:
+        db = mongo.db.users
+        result = db.delete_one({"_id": ObjectId(id)})
+        if result.deleted_count == 0:
+            return jsonify({"error": "user not found"}), 404
+        return jsonify({"message": "user deleted successfully"}), 200
+
+    except ValidationError as e:
+        return jsonify({"error": e.errors()}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 
 
